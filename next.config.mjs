@@ -1,4 +1,11 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+import { blockAds } from './lib/adblocker';
 
-export default nextConfig;
+await initAdBlocker();
+
+export default {
+  async middleware(request) {
+    const blocked = blockAds(request);
+    if (blocked) return blocked;
+    return NextResponse.next();
+  }
+};
